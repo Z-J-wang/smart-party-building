@@ -1,0 +1,4 @@
+/* stylelint-disable at-rule-no-unknown */
+@use './tailwind.css' as * ;
+@use './element.var' as *; // element-plus 样式变量必须在 element-plus 样式变量之前导入
+@use './common' as *;

@@ -2,7 +2,7 @@
  * 通用工具样式
  */
 
-@default-fontSize: 16px;
+$default-fontSize: 16px;
 
 .cursor-pointer {
   cursor: pointer;
@@ -21,11 +21,11 @@
 }
 
 .text-indent-cn {
-  text-indent: @default-fontSize * 2;
+  text-indent: $default-fontSize * 2;
 }
 
 .text-indent-en {
-  text-indent: @default-fontSize;
+  text-indent: $default-fontSize;
 }
 
 .nowrap {

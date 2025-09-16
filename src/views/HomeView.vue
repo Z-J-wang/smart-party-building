@@ -1,9 +1,9 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>
-    <TheWelcome />
+    <p class="text-indent-cn">asdad</p>
+    <p class="text-indent-en">asdad</p>
+    <el-button type="primary">按钮</el-button>
   </main>
 </template>

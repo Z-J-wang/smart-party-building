@@ -11,7 +11,7 @@ module.exports = {
     'at-rule-no-unknown': [
       true,
       {
-        ignoreAtRules: ['tailwind']
+        ignoreAtRules: ['tailwind', '@use', '@forward']
       }
     ],
     'color-hex-length': 'long', // 颜色6位长度
