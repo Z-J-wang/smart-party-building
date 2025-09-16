@@ -29,9 +29,9 @@ const { nav } = useNav()
       </div>
       <nav class="flex justify-center gap-[2vw]">
         <RouterLink
-          v-for="({ text, route }, i) in nav"
+          v-for="({ text, path }, i) in nav"
           :key="i"
-          :to="route"
+          :to="{ path }"
           class="text-gold2 text-[1.7vh] px-[1.6vw] py-[1.2vh] rounded-[3vh] border border-[rgba(255,186,102,.35)]"
           style="background: linear-gradient(180deg, rgb(255 205 128 / 22%), rgb(255 205 128 / 6%))"
           >{{ text }}</RouterLink

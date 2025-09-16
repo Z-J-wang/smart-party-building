@@ -1,9 +1,4 @@
-<script setup lang="ts">
-import { RouterLink } from 'vue-router'
-import { useNav } from '../composables/useNav'
-
-const { nav } = useNav()
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div
