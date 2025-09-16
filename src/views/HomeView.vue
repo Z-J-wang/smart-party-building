@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useNav } from '../utils/useNav'
+import { useNav } from '../composables/useNav'
 
 const { nav } = useNav()
 </script>
