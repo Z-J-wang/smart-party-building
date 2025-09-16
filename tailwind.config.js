@@ -6,7 +6,15 @@ module.exports = {
   prefix: '',
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'], // tailwind CSS 生效路劲
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        gold: '#f9c56b',
+        gold2: '#ffdd99'
+      },
+      boxShadow: {
+        goldglow: '0 0 18px rgba(255,168,84,.45), 0 0 40px rgba(255,120,48,.2)'
+      }
+    }
   },
   plugins: []
 }
