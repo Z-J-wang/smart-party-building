@@ -6,6 +6,9 @@ module.exports = {
   prefix: '',
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'], // tailwind CSS 生效路劲
   theme: {
+    fontSize: {
+      base: '16px'
+    },
     extend: {
       colors: {
         gold: '#f9c56b',

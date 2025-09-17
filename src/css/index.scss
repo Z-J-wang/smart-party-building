@@ -3,3 +3,7 @@
 @use './element.var' as *; // element-plus 样式变量必须在 element-plus 样式变量之前导入
 @use './common' as *;
 @use 'normalize.css' as *;
+
+.el-breadcrumb{
+  font-size: 16px;
+}
