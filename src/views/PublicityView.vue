@@ -21,7 +21,7 @@ const newList = computed(() => {
   return rawNewList.map((item: { id: string }) => {
     return {
       ...item,
-      link: router.resolve({ name: 'NewDetail', params: { id: item.id } }).href
+      link: router.resolve({ name: 'PublicityDetail', params: { id: item.id } }).href
     }
   })
 })
@@ -34,7 +34,7 @@ const newList = computed(() => {
         <el-icon size="24px" class="mr-2" color="#DC2913"><LocationFilled /></el-icon>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item>新闻中心</el-breadcrumb-item>
+          <el-breadcrumb-item>宣传中心</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
 
