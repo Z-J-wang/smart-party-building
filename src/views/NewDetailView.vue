@@ -27,7 +27,7 @@ const detail = Mock.mock({
       </div>
 
       <section class="p-4">
-        <h2 class="text-center">{{ detail.title }}</h2>
+        <h1 class="text-center mt-16">{{ detail.title }}</h1>
 
         <div class="flex justify-between mt-16">
           <div><span>来源：</span>{{ detail.source }}</div>
