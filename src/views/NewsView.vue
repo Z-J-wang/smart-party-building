@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BaseLayout from '@/components/BaseLayout.vue'
 import ListItem from '@/components/ListItem.vue'
+import SpecialTopic from '@/components/SpecialTopic.vue'
 import Mock from 'mockjs'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -10,6 +11,7 @@ const rawNewList = Mock.mock({
     {
       'id|+1': 1,
       title: '@ctitle(20, 50)',
+      content: '@cparagraph(10, 20)',
       date: '@date'
     }
   ]
@@ -18,7 +20,7 @@ const rawNewList = Mock.mock({
 const router = useRouter()
 
 const newList = computed(() => {
-  return rawNewList.map((item: { id: string }) => {
+  return rawNewList.map((item: { id: string; date: string }) => {
     return {
       ...item,
       link: router.resolve({ name: 'NewDetail', params: { id: item.id } }).href
@@ -38,9 +40,16 @@ const newList = computed(() => {
         </el-breadcrumb>
       </div>
 
-      <section class="pt-4 pb-8 px-8 mt-6">
-        <ListItem v-for="({ title, date, link }, i) in newList" :key="i" :title="title" :date="date" :link="link" />
-        <el-divider direction="horizontal" content-position="left"></el-divider>
+      <section class="pt-4 pb-8 px-8 mt-6 mb-10">
+        <SpecialTopic>新闻中心</SpecialTopic>
+        <ListItem
+          v-for="({ title, date, link, content }, i) in newList"
+          :key="i"
+          :title="title"
+          :date="date"
+          :link="link"
+          :content="content"
+        />
         <el-pagination background layout="prev, pager, next" :total="1000" />
       </section>
     </main>
@@ -51,9 +60,5 @@ const newList = computed(() => {
 main {
   margin: auto;
   max-width: 1140px;
-
-  section {
-    border: solid 1px #d2d2d2;
-  }
 }
 </style>

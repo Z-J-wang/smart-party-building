@@ -27,12 +27,12 @@ const router = createRouter({
     {
       path: '/publicity',
       name: 'Publicity',
-      component: () => import('../views/NewsView.vue')
+      component: () => import('../views/PublicityView.vue')
     },
     {
       path: '/publicity/:id',
       name: 'PublicityDetail',
-      component: () => import('../views/NewDetailView.vue')
+      component: () => import('../views/PublicityDetailView.vue')
     }
   ]
 })
