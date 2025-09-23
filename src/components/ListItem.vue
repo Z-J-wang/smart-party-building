@@ -36,7 +36,7 @@ const datetime = computed(() => {
       <p class="ml-2 line-clamp-2" style="line-height: 35px">{{ content }}</p>
     </div>
   </div>
-  <el-divider type="dashed"></el-divider>
+  <el-divider class="!border-t-2" border-style="dashed"></el-divider>
 </template>
 
 <style lang="less" scoped>
