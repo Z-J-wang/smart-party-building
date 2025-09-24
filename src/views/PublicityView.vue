@@ -4,12 +4,14 @@ import ListItem from '@/components/ListItem.vue'
 import Mock from 'mockjs'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import SpecialTopic from '@/components/SpecialTopic.vue'
 
 const rawNewList = Mock.mock({
-  'list|10': [
+  'list|9': [
     {
       'id|+1': 1,
       title: '@ctitle(20, 50)',
+      img: '@image(250x250)',
       date: '@date'
     }
   ]
@@ -38,8 +40,18 @@ const newList = computed(() => {
         </el-breadcrumb>
       </div>
 
-      <section class="pt-4 pb-8 px-8 mt-6">
-        <ListItem v-for="({ title, date, link }, i) in newList" :key="i" :title="title" :date="date" :link="link" />
+      <section class="pt-4 pb-8 mt-6">
+        <SpecialTopic>宣传中心</SpecialTopic>
+
+        <div class="grid grid-cols-3 gap-4 mt-8">
+          <div v-for="value in newList" :key="value.id">
+            <img :src="value.img" class="w-full" />
+            <div class="mt-2 title">
+              <a class="line-clamp-1 no-underline" :href="value.link">{{ value.title }}</a>
+            </div>
+          </div>
+        </div>
+
         <el-divider direction="horizontal" content-position="left"></el-divider>
         <el-pagination background layout="prev, pager, next" :total="1000" />
       </section>
@@ -53,7 +65,20 @@ main {
   max-width: 1140px;
 
   section {
-    border: solid 1px #d2d2d2;
+    .title {
+      margin-bottom: 15px;
+      border-left: 5px solid var(--el-color-primary);
+      padding-left: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 25px;
+
+      a {
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+      }
+    }
   }
 }
 </style>
