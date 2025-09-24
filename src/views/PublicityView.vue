@@ -43,8 +43,8 @@ const newList = computed(() => {
       <section class="pt-4 pb-8 mt-6">
         <SpecialTopic>宣传中心</SpecialTopic>
 
-        <div class="grid grid-cols-3 gap-4 mt-8">
-          <div v-for="value in newList" :key="value.id">
+        <div class="grid grid-cols-3 gap-6 mt-8">
+          <div v-for="value in newList" :key="value.id" :title="value.title">
             <img :src="value.img" class="w-full" />
             <div class="mt-2 title">
               <a class="line-clamp-1 no-underline" :href="value.link">{{ value.title }}</a>
@@ -66,17 +66,13 @@ main {
 
   section {
     .title {
-      margin-bottom: 15px;
       border-left: 5px solid var(--el-color-primary);
       padding-left: 10px;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 16px;
       line-height: 25px;
 
       a {
-        font-size: 18px;
-        font-weight: bold;
-        color: #000000;
+        color: #303030;
       }
     }
   }
