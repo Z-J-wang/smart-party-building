@@ -1,3 +1,6 @@
+import { useResizeObserver } from '@vueuse/core'
+import { merge } from 'lodash'
+
 import * as echarts from 'echarts/core'
 import { GridComponent, TooltipComponent } from 'echarts/components'
 import { BarChart } from 'echarts/charts'
@@ -9,10 +12,18 @@ echarts.use([GridComponent, TooltipComponent, BarChart, CanvasRenderer])
 export function useBar() {
   const bar = ref<echarts.ECharts>()
 
-  const renderBar = (element: HTMLElement | null, data: { [key: string]: number }) => {
+  const renderBar = (element: HTMLElement | null, data: { [key: string]: number }, options?: any) => {
     if (!element) return
+
+    if (!bar.value) {
+      useResizeObserver(element, () => {
+        bar.value?.dispose()
+        renderBar(element, data, options)
+      })
+    }
+
     bar.value = echarts.init(element)
-    const option = {
+    const defaultOption = {
       tooltip: {
         trigger: 'item',
         axisPointer: {
@@ -49,7 +60,7 @@ export function useBar() {
         }
       ]
     }
-    bar.value.setOption(option)
+    bar.value.setOption(merge(defaultOption, options))
   }
 
   onUnmounted(() => {

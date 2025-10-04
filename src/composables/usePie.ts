@@ -1,3 +1,5 @@
+import { useResizeObserver } from '@vueuse/core'
+import { merge } from 'lodash'
 import { onUnmounted, ref } from 'vue'
 
 import * as echarts from 'echarts/core'
@@ -11,8 +13,15 @@ echarts.use([TooltipComponent, LegendComponent, PieChart, CanvasRenderer, LabelL
 export function usePie() {
   const chart = ref<echarts.ECharts>()
 
-  const renderPie = (element: HTMLElement | null, data: { [key: string]: number }) => {
+  const renderPie = (element: HTMLElement | null, data: { [key: string]: number }, options?: any) => {
     if (!element) return
+
+    if (!chart.value) {
+      useResizeObserver(element, () => {
+        chart.value?.dispose()
+        renderPie(element, data, options)
+      })
+    }
     chart.value = echarts.init(element)
     const option = {
       color: ['#C94337', '#EA7A2E', '#F0A842', '#F7D397', '#FBF6F0'],
@@ -43,7 +52,7 @@ export function usePie() {
         }
       ]
     }
-    chart.value.setOption(option)
+    chart.value.setOption(merge(option, options))
   }
 
   onUnmounted(() => {

@@ -1,3 +1,5 @@
+import { useResizeObserver } from '@vueuse/core'
+
 import * as echarts from 'echarts/core'
 import { GridComponent, TooltipComponent } from 'echarts/components'
 import { LineChart } from 'echarts/charts'
@@ -10,9 +12,16 @@ echarts.use([GridComponent, TooltipComponent, LineChart, CanvasRenderer, Univers
 
 export function useLine() {
   const line = ref<echarts.ECharts>()
-
   const renderLine = (element: HTMLElement | null, data: { [key: string]: number }, options?: any) => {
     if (!element) return
+
+    if (!line.value) {
+      useResizeObserver(element, () => {
+        line.value?.dispose()
+        renderLine(element, data, options)
+      })
+    }
+
     line.value = echarts.init(element)
     const defaultOption = {
       tooltip: {

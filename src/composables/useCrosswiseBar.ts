@@ -1,17 +1,26 @@
+import { useResizeObserver } from '@vueuse/core'
+import { merge } from 'lodash'
+
 import * as echarts from 'echarts/core'
 import { GridComponent, TooltipComponent } from 'echarts/components'
 import { BarChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
 import { onUnmounted, ref } from 'vue'
-import { Bottom } from '@element-plus/icons-vue'
 
 echarts.use([GridComponent, TooltipComponent, BarChart, CanvasRenderer])
 
 export function useCrosswiseBar() {
   const bar = ref<echarts.ECharts>()
 
-  const renderCrosswiseBar = (element: HTMLElement | null, data: { [key: string]: number }) => {
+  const renderCrosswiseBar = (element: HTMLElement | null, data: { [key: string]: number }, options?: any) => {
     if (!element) return
+
+    if (!bar.value) {
+      useResizeObserver(element, () => {
+        bar.value?.dispose()
+        renderCrosswiseBar(element, data, options)
+      })
+    }
     bar.value = echarts.init(element)
     const option = {
       tooltip: {
@@ -58,7 +67,7 @@ export function useCrosswiseBar() {
         }
       ]
     }
-    bar.value.setOption(option)
+    bar.value.setOption(merge(option, options))
   }
 
   onUnmounted(() => {
