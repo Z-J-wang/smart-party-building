@@ -2,14 +2,83 @@
 import { useMembersStore } from '@/stores/members'
 import { CountTo } from 'vue3-count-to'
 import { usePie } from '@/composables/usePie'
-import { onMounted } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
+import { useCrosswiseBar } from '@/composables/useCrosswiseBar'
+import { useLine } from '@/composables/useLine'
 
-const { members, partyMemberStatusData } = useMembersStore()
+interface TabDate {
+  label: string
+  name: string
+  data: any
+}
+
+const {
+  members,
+  ageData,
+  genderData,
+  partyAgeData,
+  partyMemberStatusData,
+  educationData,
+  memberGrowthData,
+  ethnicityData
+} = useMembersStore()
 
 const { renderPie } = usePie()
+const { renderCrosswiseBar } = useCrosswiseBar()
+const { renderLine } = useLine()
+
+const tabs: TabDate[] = [
+  {
+    label: '年龄分布',
+    name: 'age',
+    data: ageData
+  },
+  {
+    label: '学历分布',
+    name: 'education',
+    data: educationData
+  },
+  {
+    label: '党龄分布',
+    name: 'partyAge',
+    data: partyAgeData
+  },
+  {
+    label: '性别分布',
+    name: 'gender',
+    data: genderData
+  },
+  {
+    label: '民族分布',
+    name: 'ethnicity',
+    data: ethnicityData
+  }
+]
+const activeTab = ref(tabs[0].name)
+
+const handlerTabChange = (tabName: string) => {
+  const tab = tabs.find((tab) => tab.name === tabName)
+  if (tab) {
+    nextTick(() => {
+      renderCrosswiseBar(document.querySelector('#' + tab.name), tab.data)
+    })
+  }
+}
 
 onMounted(() => {
+  console.log(memberGrowthData)
+
   renderPie(document.querySelector('#PartyMemberPie'), partyMemberStatusData)
+  renderCrosswiseBar(document.querySelector('#' + tabs[0].name), tabs[0].data)
+  renderLine(document.querySelector('#JoinInChart'), memberGrowthData, {
+    grid: {
+      top: '10%',
+      left: '3%',
+      right: '4%',
+      bottom: '10%',
+      containLabel: true
+    }
+  })
 })
 </script>
 
@@ -126,31 +195,12 @@ onMounted(() => {
             ></i
             ><span class="text-gold font-bold text-[1.8vh]">党员画像</span>
           </div>
-          <div class="space-y-[1.2vh] text-[1.4vh]">
-            <div class="grid grid-cols-[10vh_1fr] items-center gap-2">
-              <span class="opacity-90">年龄分布</span>
-              <div class="h-[1.2vh] rounded bg-[rgba(255,210,150,.15)]">
-                <div class="h-full rounded bg-[rgba(255,210,150,.7)]" style="width: 47%"></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-[10vh_1fr] items-center gap-2">
-              <span class="opacity-90">性别分布</span>
-              <div class="h-[1.2vh] rounded bg-[rgba(255,210,150,.15)]">
-                <div class="h-full rounded bg-[rgba(255,210,150,.7)]" style="width: 68%"></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-[10vh_1fr] items-center gap-2">
-              <span class="opacity-90">民族分布</span>
-              <div class="h-[1.2vh] rounded bg-[rgba(255,210,150,.15)]">
-                <div class="h-full rounded bg-[rgba(255,210,150,.7)]" style="width: 29%"></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-[10vh_1fr] items-center gap-2">
-              <span class="opacity-90">学历分布</span>
-              <div class="h-[1.2vh] rounded bg-[rgba(255,210,150,.15)]">
-                <div class="h-full rounded bg-[rgba(255,210,150,.7)]" style="width: 72%"></div>
-              </div>
-            </div>
+          <div class="w-full h-full">
+            <el-tabs v-model="activeTab" class="w-full h-full" @tab-change="handlerTabChange">
+              <el-tab-pane v-for="tab in tabs" :label="tab.label" :name="tab.name" :key="tab.name" keep-alive>
+                <div :id="tab.name" class="w-full h-full"></div>
+              </el-tab-pane>
+            </el-tabs>
           </div>
           <div
             class="pointer-events-none absolute inset-0"
@@ -257,7 +307,7 @@ onMounted(() => {
             class="h-[22vh] grid place-items-center rounded-[1vh] text-[#ffddbb] opacity-90 border border-dashed border-[rgba(255,200,150,.35)]"
             style="background: linear-gradient(180deg, rgb(255 210 150 / 6%), rgb(255 210 150 / 2%))"
           >
-            Line Chart Placeholder
+            <div id="JoinInChart" class="w-full h-full"></div>
           </div>
           <div
             class="pointer-events-none absolute inset-0"
@@ -360,10 +410,20 @@ onMounted(() => {
     </main>
   </div>
 </template>
-<style>
+
+<style scoped>
 @media (aspect-ratio <= 16/10) {
   main {
     grid-template-columns: 30vw 1fr 30vw !important;
+  }
+}
+
+.el-tabs {
+  --el-text-color-primary: white;
+
+  .el-tab-pane {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

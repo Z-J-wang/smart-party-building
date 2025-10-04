@@ -14,7 +14,7 @@ const rawMember = Mock.mock({
       'education|1': ['本科', '大专', '高中'],
       phone: null,
       party_branch_name: ['学生党支部', '光源与照明党支部', '新能源科学与工程党支部', '材料科学与工程党支部'],
-      join_party_date: '@date("2025-MM-dd")',
+      'join_party_date|1': ['@date("2025-MM-dd")', '@date("2024-MM-dd")', '@date("2023-MM-dd")'],
       'party_member_status|1': ['预备党员', '正式党员'],
       photo: null
     }
@@ -137,15 +137,32 @@ export const useMembersStore = defineStore('members', () => {
     return partyAgeData
   })
 
+  // 党员增长情况
+  const memberGrowthData = computed(() => {
+    const memberGrowthData: { [key: string]: number } = {}
+
+    for (const member of members.value) {
+      const year = new Date(member.join_party_date).getFullYear()
+      if (year in memberGrowthData) {
+        memberGrowthData[year]++
+      } else {
+        memberGrowthData[year] = 1
+      }
+    }
+
+    return memberGrowthData
+  })
+
   return {
     members,
-    ageData,
-    partyAgeData,
     memberData,
+    partyAgeData,
+    ageData,
     genderData,
     partyMemberStatusData,
     partyBranchData,
     educationData,
-    ethnicityData
+    ethnicityData,
+    memberGrowthData
   }
 })
