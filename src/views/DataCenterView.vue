@@ -1,4 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useMembersStore } from '@/stores/members'
+import { CountTo } from 'vue3-count-to'
+import { usePie } from '@/composables/usePie'
+import { onMounted } from 'vue'
+
+const { members, partyMemberStatusData } = useMembersStore()
+
+const { renderPie } = usePie()
+
+onMounted(() => {
+  renderPie(document.querySelector('#PartyMemberPie'), partyMemberStatusData)
+})
+</script>
 
 <template>
   <div
@@ -58,23 +71,14 @@
             ></i
             ><span class="text-gold font-bold text-[1.8vh]">党员总量</span>
           </div>
-          <div class="grid grid-cols-4 gap-[0.8vw] items-end">
-            <div class="col-span-4 text-[2.6vh] font-black text-[#ffe7c8]">256</div>
-            <div class="text-center">
-              <div class="text-[2.2vh] font-bold text-[#ffe6c6]">169</div>
-              <div class="text-[1.4vh] opacity-90">正式党员</div>
-            </div>
-            <div class="text-center">
-              <div class="text-[2.2vh] font-bold text-[#ffe6c6]">33</div>
-              <div class="text-[1.4vh] opacity-90">预备党员</div>
-            </div>
-            <div class="text-center">
-              <div class="text-[2.2vh] font-bold text-[#ffe6c6]">42</div>
-              <div class="text-[1.4vh] opacity-90">流动党员</div>
-            </div>
-            <div class="text-center">
-              <div class="text-[2.2vh] font-bold text-[#ffe6c6]">12</div>
-              <div class="text-[1.4vh] opacity-90">发展对象</div>
+          <div class="text-[#ffe7c8] text-center">
+            <span class="text-[2.2vh]">党员总数（人）</span>
+            <CountTo class="text-[2.6vh] font-black" :endVal="members.length" />
+          </div>
+          <div class="flex justify-around items-center mt-4">
+            <div class="text-center" v-for="status in Object.keys(partyMemberStatusData)" :key="status">
+              <CountTo class="text-[2.2vh] font-bold text-[#ffe6c6]" :endVal="partyMemberStatusData[status]" />
+              <div class="text-[1.4vh] opacity-90">{{ status }}</div>
             </div>
           </div>
           <div
@@ -89,7 +93,6 @@
           style="
             background: linear-gradient(180deg, rgb(120 22 7 / 55%), rgb(60 8 2 / 55%));
             box-shadow: inset 0 0 28px rgb(0 0 0 / 35%), 0 0 24px rgb(255 150 80 / 18%);
-            grid-template-columns: 1fr 1fr;
           "
         >
           <div>
@@ -100,33 +103,7 @@
               ></i
               ><span class="text-gold font-bold text-[1.8vh]">党组织构成</span>
             </div>
-            <div class="h-[26vh] grid place-items-center">
-              <div
-                class="relative w-[20vh] h-[20vh] rounded-full grid place-items-center border-4 border-[rgba(255,210,150,.45)]"
-                style="
-                  background: conic-gradient(#ffdeac 0% 30%, #f0b15a 30% 55%, #ffb867 55% 78%, #ff9f4c 78% 100%);
-                  box-shadow: inset 0 0 40px rgb(0 0 0 / 35%);
-                "
-              >
-                <div class="w-[9vh] h-[9vh] rounded-full bg-[#4b0300] border-2 border-[rgba(255,210,150,.6)]"></div>
-              </div>
-            </div>
-          </div>
-          <div class="self-center">
-            <ul class="space-y-[0.8vh] text-[1.5vh]">
-              <li class="flex items-center gap-2">
-                <span class="inline-block w-[1.2vh] h-[1.2vh] rounded-sm" style="background: #ffdeac"></span>机关党委
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="inline-block w-[1.2vh] h-[1.2vh] rounded-sm" style="background: #f0b15a"></span>支部委员会
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="inline-block w-[1.2vh] h-[1.2vh] rounded-sm" style="background: #ffb867"></span>党小组
-              </li>
-              <li class="flex items-center gap-2">
-                <span class="inline-block w-[1.2vh] h-[1.2vh] rounded-sm" style="background: #ff9f4c"></span>其他组织
-              </li>
-            </ul>
+            <div id="PartyMemberPie" class="h-full w-full"></div>
           </div>
           <div
             class="pointer-events-none absolute inset-0"

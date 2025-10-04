@@ -24,6 +24,22 @@ const rawMember = Mock.mock({
 export const useMembersStore = defineStore('members', () => {
   const members = ref(rawMember)
 
+  // 获取指定属性的统计数据
+  const counterByProperty = (property: string) => {
+    const data: { [key: string]: number } = {}
+
+    for (const member of members.value) {
+      if (member[property] in data) {
+        data[member[property]]++
+      } else {
+        data[member[property]] = 1
+      }
+    }
+
+    return data
+  }
+
+  // 年龄统计
   const ageData = computed(() => {
     const ageData: { [key: string]: number } = {}
     const createAgeKey = (age: number) => {
@@ -45,6 +61,7 @@ export const useMembersStore = defineStore('members', () => {
     return ageData
   })
 
+  // 最近一年入党人数统计
   const memberData = computed(() => {
     const memberData: { [key: string]: number } = {}
     const createKey = () => {
@@ -75,18 +92,60 @@ export const useMembersStore = defineStore('members', () => {
 
   // 性别统计
   const genderData = computed(() => {
-    const genderData: { [key: string]: number } = {
-      男: 0,
-      女: 0
-    }
-
-    for (const member of members.value) {
-      if (member.gender in genderData) {
-        genderData[member.gender]++
-      }
-    }
-    return genderData
+    return counterByProperty('gender')
   })
 
-  return { members, ageData, memberData, genderData }
+  // 党员身份统计
+  const partyMemberStatusData = computed(() => {
+    return counterByProperty('party_member_status')
+  })
+
+  // 党支部统计
+  const partyBranchData = computed(() => {
+    return counterByProperty('party_branch_name')
+  })
+
+  // 学历统计
+  const educationData = computed(() => {
+    return counterByProperty('education')
+  })
+
+  // 民族统计
+  const ethnicityData = computed(() => {
+    return counterByProperty('ethnicity')
+  })
+
+  // 党龄统计
+  const partyAgeData = computed(() => {
+    const partyAgeData: { [key: string]: number } = {}
+
+    const createAgeKey = (partyAge: number) => {
+      const temp = partyAge.toString()[0]
+      const start = Number(temp) * 10
+      const end = start + 10
+      return start + '-' + end
+    }
+    for (const member of members.value) {
+      const partyAge = new Date().getFullYear() - new Date(member.join_party_date).getFullYear()
+      const key = createAgeKey(partyAge)
+      if (key in partyAgeData) {
+        partyAgeData[key]++
+      } else {
+        partyAgeData[key] = 1
+      }
+    }
+    return partyAgeData
+  })
+
+  return {
+    members,
+    ageData,
+    partyAgeData,
+    memberData,
+    genderData,
+    partyMemberStatusData,
+    partyBranchData,
+    educationData,
+    ethnicityData
+  }
 })

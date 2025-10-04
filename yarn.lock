@@ -1137,6 +1137,11 @@ copy-anything@^2.0.1:
   dependencies:
     is-what "^3.14.1"
 
+core-js@^3.8.1:
+  version "3.45.1"
+  resolved "https://registry.npmmirror.com/core-js/-/core-js-3.45.1.tgz#5810e04a1b4e9bc5ddaa4dd12e702ff67300634d"
+  integrity sha512-L4NPsJlCfZsPeXukyzHFlg/i7IIVwHSItR0wg0FLNqYClJ4MQYTYLbC7EkjKYRLZF2iof2MUgN0EGy7MdQFChg==
+
 cosmiconfig@^9.0.0:
   version "9.0.0"
   resolved "https://registry.npmmirror.com/cosmiconfig/-/cosmiconfig-9.0.0.tgz"
@@ -3892,6 +3897,11 @@ vue-component-type-helpers@1.6.5:
   resolved "https://registry.npmmirror.com/vue-component-type-helpers/-/vue-component-type-helpers-1.6.5.tgz"
   integrity sha512-iGdlqtajmiqed8ptURKPJ/Olz0/mwripVZszg6tygfZSIL9kYFPJTNY6+Q6OjWGznl2L06vxG5HvNvAnWrnzbg==
 
+vue-count-to@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.npmmirror.com/vue-count-to/-/vue-count-to-1.0.13.tgz#3e7573ea6e64c2b2972f64e0a2ab2e23c7590ff3"
+  integrity sha512-6R4OVBVNtQTlcbXu6SJ8ENR35M2/CdWt3Jmv57jOUM+1ojiFmjVGvZPH8DfHpMDSA+ITs+EW5V6qthADxeyYOQ==
+
 vue-demi@*:
   version "0.14.10"
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.14.10.tgz"
@@ -3938,6 +3948,14 @@ vue-tsc@^1.6.5:
     "@vue/language-core" "1.8.3"
     "@vue/typescript" "1.8.3"
     semver "^7.3.8"
+
+vue3-count-to@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmmirror.com/vue3-count-to/-/vue3-count-to-1.1.2.tgz#a4f48947371f25b4edc940c482ddb89aaebb2462"
+  integrity sha512-C5AvlcGfyM4XvFqPDkni94rqGd5K/+RB+B4xv/1NQx3RrdC+GvXPFzeXW5hWL/jh8ehWLm4LITyK0eMKf4iJbg==
+  dependencies:
+    core-js "^3.8.1"
+    vue-count-to "^1.0.13"
 
 vue@^3.3.4:
   version "3.3.4"
