@@ -3,16 +3,18 @@ import { RouterLink } from 'vue-router'
 import { useNav } from '../composables/useNav'
 import { useMembersStore } from '@/stores/members'
 import { useBar } from '@/composables/useBar'
+import { useLine } from '@/composables/useLine'
 import { onMounted } from 'vue'
 
-const { members, ageData } = useMembersStore()
+const { members, ageData, memberData, genderData } = useMembersStore()
 const { renderBar } = useBar()
+const { renderLine } = useLine()
 
 const { nav } = useNav()
 
 onMounted(() => {
   renderBar(document.querySelector('#AgeChart'), ageData)
-  console.log(ageData)
+  renderLine(document.querySelector('#JoinInChart'), memberData)
 })
 </script>
 
@@ -121,12 +123,30 @@ onMounted(() => {
             ></i
             ><span class="text-gold font-bold text-[1.9vh]">党员人数</span>
           </div>
-          <div class="grid grid-cols-[5vh_1fr] items-center gap-[1vw]">
-            <div
-              class="rounded-full shadow-goldglow"
-              style="width: 5vh; height: 5vh; background: radial-gradient(circle at 30% 30%, #ffe6c8, #f0b15a)"
-            ></div>
-            <div class="text-[3.2vh] font-extrabold text-[#ffe3c4]">265</div>
+          <div class="flex justify-center items-center gap-[1.2vw]">
+            <div class="grid grid-cols-[5vh_1fr] items-center gap-[1vw]">
+              <div
+                class="rounded-full shadow-goldglow"
+                style="width: 5vh; height: 5vh; background: radial-gradient(circle at 30% 30%, #ffe6c8, #f0b15a)"
+              ></div>
+              <div class="text-[3.2vh] font-extrabold text-[#ffe3c4]">{{ members.length }}</div>
+            </div>
+          </div>
+          <div class="flex justify-around items-center gap-[1.2vw] mt-4">
+            <div class="grid grid-cols-[5vh_1fr] items-center gap-[1vw]">
+              <div
+                class="rounded-full shadow-goldglow"
+                style="width: 5vh; height: 5vh; background: radial-gradient(circle at 30% 30%, #ffe6c8, #f0b15a)"
+              ></div>
+              <div class="text-[3.2vh] font-extrabold text-[#ffe3c4]">{{ genderData['男'] }}</div>
+            </div>
+            <div class="grid grid-cols-[5vh_1fr] items-center gap-[1vw]">
+              <div
+                class="rounded-full shadow-goldglow"
+                style="width: 5vh; height: 5vh; background: radial-gradient(circle at 30% 30%, #ffe6c8, #f0b15a)"
+              ></div>
+              <div class="text-[3.2vh] font-extrabold text-[#ffe3c4]">{{ genderData['女'] }}</div>
+            </div>
           </div>
           <div
             class="pointer-events-none absolute inset-0"
@@ -211,7 +231,7 @@ onMounted(() => {
             class="h-full grid place-items-center rounded-[1vh] text-[#ffddbb] opacity-90 border border-dashed border-[rgba(255,200,150,.35)]"
             style="background: linear-gradient(180deg, rgb(255 210 150 / 6%), rgb(255 210 150 / 2%))"
           >
-            Line Chart Placeholder
+            <div id="JoinInChart" class="w-full h-full"></div>
           </div>
           <div
             class="pointer-events-none absolute inset-0"

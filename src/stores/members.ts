@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import Mock from 'mockjs'
-import { es } from 'element-plus/es/locales.mjs'
 
 const rawMember = Mock.mock({
   'list|60': [
@@ -21,6 +20,7 @@ const rawMember = Mock.mock({
     }
   ]
 }).list
+
 export const useMembersStore = defineStore('members', () => {
   const members = ref(rawMember)
 
@@ -45,5 +45,48 @@ export const useMembersStore = defineStore('members', () => {
     return ageData
   })
 
-  return { members, ageData }
+  const memberData = computed(() => {
+    const memberData: { [key: string]: number } = {}
+    const createKey = () => {
+      const nowYear = new Date().getFullYear()
+      const nowMonth = new Date().getMonth() + 1
+      // 生成12个月份
+      for (let i = 1; i <= 12; i++) {
+        const month = nowMonth + i
+        const year = month > 12 ? nowYear : nowYear - 1
+        const monthKey = month > 12 ? month - 12 : month
+        memberData[year + '-' + monthKey] = 0
+      }
+    }
+    createKey()
+
+    for (const member of members.value) {
+      const joinDate = new Date(member.join_party_date)
+      const joinYear = joinDate.getFullYear()
+      const joinMonth = joinDate.getMonth() + 1
+      const joinKey = joinYear + '-' + joinMonth
+      if (joinKey in memberData) {
+        memberData[joinKey]++
+      }
+    }
+
+    return memberData
+  })
+
+  // 性别统计
+  const genderData = computed(() => {
+    const genderData: { [key: string]: number } = {
+      男: 0,
+      女: 0
+    }
+
+    for (const member of members.value) {
+      if (member.gender in genderData) {
+        genderData[member.gender]++
+      }
+    }
+    return genderData
+  })
+
+  return { members, ageData, memberData, genderData }
 })
